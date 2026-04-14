@@ -130,19 +130,27 @@
     </div>
   </div>
 
-  <script>
+<script>
     const BLYNK_TOKEN = "3u3KRx9ufZraw38uzQ3EbucGv-elvIhb";
+    
+    // Set to 30000 (30 seconds) to save massive amounts of API credits
+    const REFRESH_RATE_MS = 30000; 
 
     async function updateDashboard() {
+      // SMART FIX: Do not waste API calls if the user is in another tab
+      if (document.hidden) {
+        console.log("Tab hidden: Pausing API calls to save credits.");
+        return; 
+      }
+
       try {
-        // We now fetch v2 alongside v0, v1, and v3
         const response = await fetch(`https://blynk.cloud/external/api/get?token=${BLYNK_TOKEN}&v0&v1&v2&v3`);
         const data = await response.json();
 
         // Update DOM Elements
         document.getElementById('moisture').innerText = data.v0 + "%";
         document.getElementById('temp').innerText = data.v1 + "°C";
-        document.getElementById('humidity').innerText = data.v2 + "%"; // Humidity added here
+        document.getElementById('humidity').innerText = data.v2 + "%";
 
         const statusText = document.getElementById('status-text');
         const pumpIconBg = document.getElementById('pump-icon-bg');
@@ -162,9 +170,16 @@
       }
     }
 
-    // Ping the cloud every 3 seconds for real-time updates
-    setInterval(updateDashboard, 3000);
-    updateDashboard(); // Initial load
+    // Initialize
+    updateDashboard(); 
+    setInterval(updateDashboard, REFRESH_RATE_MS);
+
+    // Bonus feature: Instantly refresh data when the user switches back to this tab
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        updateDashboard();
+      }
+    });
   </script>
 
 </body>
