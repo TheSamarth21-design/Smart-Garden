@@ -3,74 +3,168 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Garden</title>
+  <title>EcoSmart Garden IoT</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            leaf: { 500: '#10b981', 600: '#059669', 900: '#064e3b' },
+            earth: { 500: '#b45309', 800: '#78350f' }
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-black">
 
-  <div class="min-h-screen flex items-center justify-center p-6 font-mono">
-    <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-2xl w-full max-w-md text-white">
-      
-      <h2 class="text-2xl font-bold mb-6 text-center tracking-widest text-cyan-400">SMART GARDEN HUD</h2>
-      
-      <div class="space-y-6">
-        <div class="flex justify-between items-center border-b border-white/10 pb-2">
-          <span class="text-gray-400 uppercase text-xs">Soil Moisture</span>
-          <span id="moisture" class="text-2xl font-bold text-green-400">--%</span>
-        </div>
+<body class="bg-[url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-gray-800 antialiased font-sans">
 
-        <div class="flex justify-between items-center border-b border-white/10 pb-2">
-          <span class="text-gray-400 uppercase text-xs">Temperature</span>
-          <span id="temp" class="text-2xl font-bold text-orange-400">--°C</span>
-        </div>
+  <div class="min-h-screen bg-black/20 backdrop-blur-sm py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
 
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400 uppercase text-xs">Pump Status</span>
-          <div id="status-indicator" class="flex items-center gap-2">
-            <div id="status-dot" class="w-3 h-3 rounded-full bg-gray-500 shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
-            <span id="status-text" class="font-bold uppercase tracking-tighter">OFFLINE</span>
+      <header class="text-center space-y-2">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg tracking-tight">
+          <i class="fa-solid fa-leaf text-leaf-500 mr-2"></i>EcoSmart Garden
+        </h1>
+        <p class="text-lg text-white/90 font-medium drop-shadow-md">Intelligent IoT Monitoring & Automated Irrigation</p>
+      </header>
+
+      <div class="bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl p-8 shadow-2xl">
+        <h2 class="text-2xl font-bold text-leaf-900 mb-6 border-b border-leaf-900/20 pb-2">Live Telemetry</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <div class="bg-white/60 rounded-2xl p-6 shadow-sm flex items-center space-x-4 border border-white/50 transition hover:scale-105 hover:bg-white/80">
+            <div class="bg-blue-100 p-4 rounded-full text-blue-500">
+              <i class="fa-solid fa-droplet text-2xl"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-gray-500 uppercase">Soil Moisture</p>
+              <p id="moisture" class="text-3xl font-bold text-gray-800">--%</p>
+            </div>
           </div>
+
+          <div class="bg-white/60 rounded-2xl p-6 shadow-sm flex items-center space-x-4 border border-white/50 transition hover:scale-105 hover:bg-white/80">
+            <div class="bg-orange-100 p-4 rounded-full text-orange-500">
+              <i class="fa-solid fa-temperature-half text-2xl"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-gray-500 uppercase">Temperature</p>
+              <p id="temp" class="text-3xl font-bold text-gray-800">--°C</p>
+            </div>
+          </div>
+
+          <div class="bg-white/60 rounded-2xl p-6 shadow-sm flex items-center space-x-4 border border-white/50 transition hover:scale-105 hover:bg-white/80">
+            <div class="bg-teal-100 p-4 rounded-full text-teal-600">
+              <i class="fa-solid fa-cloud-rain text-2xl"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-gray-500 uppercase">Air Humidity</p>
+              <p id="humidity" class="text-3xl font-bold text-gray-800">--%</p>
+            </div>
+          </div>
+
+          <div class="bg-white/60 rounded-2xl p-6 shadow-sm flex items-center space-x-4 border border-white/50 transition hover:scale-105 hover:bg-white/80">
+            <div id="pump-icon-bg" class="bg-gray-200 p-4 rounded-full text-gray-500 transition-colors duration-300">
+              <i class="fa-solid fa-power-off text-2xl"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-gray-500 uppercase">Pump Status</p>
+              <p id="status-text" class="text-2xl font-bold text-gray-800 tracking-tight">OFFLINE</p>
+            </div>
+          </div>
+
         </div>
       </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <div class="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-8 shadow-xl">
+          <h3 class="text-xl font-bold text-leaf-900 mb-4"><i class="fa-solid fa-circle-info mr-2"></i>System Overview</h3>
+          <p class="text-gray-700 leading-relaxed">
+            The EcoSmart Garden is an automated Internet of Things (IoT) solution designed to eliminate the guesswork from plant care. By continuously analyzing soil moisture and ambient climate conditions, the system intelligently triggers a water pump only when the plant genuinely needs it, bridging the gap between nature and digital infrastructure.
+          </p>
+        </div>
+
+        <div class="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-8 shadow-xl">
+          <h3 class="text-xl font-bold text-leaf-900 mb-4"><i class="fa-solid fa-check-double mr-2"></i>Core Advantages</h3>
+          <ul class="space-y-3 text-gray-700">
+            <li class="flex items-start"><i class="fa-solid fa-check text-leaf-500 mt-1 mr-3"></i> <b>Water Conservation:</b> Eliminates overwatering by acting purely on data logic.</li>
+            <li class="flex items-start"><i class="fa-solid fa-check text-leaf-500 mt-1 mr-3"></i> <b>Root Health:</b> Ensures soil has appropriate dry periods before re-triggering the pump.</li>
+            <li class="flex items-start"><i class="fa-solid fa-check text-leaf-500 mt-1 mr-3"></i> <b>Global Telemetry:</b> Monitor garden health and microclimate from anywhere via the cloud.</li>
+          </ul>
+        </div>
+
+        <div class="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-8 shadow-xl">
+          <h3 class="text-xl font-bold text-leaf-900 mb-4"><i class="fa-solid fa-microchip mr-2"></i>Technology Stack</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm font-semibold">ESP32 Microcontroller</span>
+            <span class="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm font-semibold">Capacitive Moisture Sensor</span>
+            <span class="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm font-semibold">DHT11 Climate Sensor</span>
+            <span class="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm font-semibold">5V Relay Module</span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">Blynk IoT Cloud</span>
+            <span class="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm font-semibold">Tailwind CSS & Vanilla JS</span>
+          </div>
+        </div>
+
+        <div class="bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl p-8 shadow-xl border-l-4 border-l-earth-500">
+          <h3 class="text-xl font-bold text-earth-800 mb-4"><i class="fa-solid fa-lightbulb mr-2"></i>Future Recommendations</h3>
+          <ul class="space-y-3 text-gray-700">
+            <li class="flex items-start"><i class="fa-solid fa-arrow-right text-earth-500 mt-1 mr-3"></i> <b>Weather API Integration:</b> Pause watering if local weather forecasts predict rain within 12 hours.</li>
+            <li class="flex items-start"><i class="fa-solid fa-arrow-right text-earth-500 mt-1 mr-3"></i> <b>Solar Integration:</b> Power the ESP32 and 12V pump entirely via a small solar panel and TP4056 battery circuit.</li>
+            <li class="flex items-start"><i class="fa-solid fa-arrow-right text-earth-500 mt-1 mr-3"></i> <b>Machine Learning:</b> Add an ESP32-CAM to visually detect early signs of leaf disease or weed growth.</li>
+          </ul>
+        </div>
+
+      </div>
       
+      <footer class="text-center text-white/70 text-sm mt-8 pb-4">
+        Designed & Engineered for IT Innovation. Data synced via Blynk Cloud API.
+      </footer>
+
     </div>
   </div>
 
   <script>
-    // I noticed you already put your token in, so I've included it here!
     const BLYNK_TOKEN = "3u3KRx9ufZraw38uzQ3EbucGv-elvIhb";
 
     async function updateDashboard() {
       try {
-        const response = await fetch(`https://blynk.cloud/external/api/get?token=${BLYNK_TOKEN}&v0&v1&v3`);
+        // We now fetch v2 alongside v0, v1, and v3
+        const response = await fetch(`https://blynk.cloud/external/api/get?token=${BLYNK_TOKEN}&v0&v1&v2&v3`);
         const data = await response.json();
 
-        // Update Moisture and Temp
+        // Update DOM Elements
         document.getElementById('moisture').innerText = data.v0 + "%";
         document.getElementById('temp').innerText = data.v1 + "°C";
+        document.getElementById('humidity').innerText = data.v2 + "%"; // Humidity added here
 
-        // Update Pump Status UI
         const statusText = document.getElementById('status-text');
-        const statusDot = document.getElementById('status-dot');
+        const pumpIconBg = document.getElementById('pump-icon-bg');
 
+        // Logic for Pump UI
         if (data.v3 == 1) {
-          statusText.innerText = "ACTIVE";
-          statusText.className = "text-cyan-400 font-bold tracking-tighter animate-pulse";
-          statusDot.className = "w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_15px_#22d3ee]";
+          statusText.innerText = "IRRIGATING";
+          statusText.className = "text-2xl font-bold text-leaf-600 tracking-tight animate-pulse";
+          pumpIconBg.className = "bg-leaf-100 p-4 rounded-full text-leaf-600 transition-colors duration-300 shadow-[0_0_15px_rgba(16,185,129,0.4)]";
         } else {
-          statusText.innerText = "IDLE";
-          statusText.className = "text-gray-500 font-bold tracking-tighter";
-          statusDot.className = "w-3 h-3 rounded-full bg-gray-600";
+          statusText.innerText = "IDLE (STANDBY)";
+          statusText.className = "text-2xl font-bold text-gray-600 tracking-tight";
+          pumpIconBg.className = "bg-gray-200 p-4 rounded-full text-gray-500 transition-colors duration-300";
         }
       } catch (error) {
         console.error("Blynk API Error:", error);
       }
     }
 
-    // Update every 3 seconds
+    // Ping the cloud every 3 seconds for real-time updates
     setInterval(updateDashboard, 3000);
-    updateDashboard(); // Initial call
+    updateDashboard(); // Initial load
   </script>
 
 </body>
